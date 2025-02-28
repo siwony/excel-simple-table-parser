@@ -6,6 +6,8 @@ public class SampleParser {
 
     private final static int SHEET_INDEX = 0;
     private final static int HEADER_ROW_INDEX = 0;
+    private final static Set<String> HEADER_COLUMNS = Set.of("ID", "Name", "Age", "Email");
+
 
     public List<SampleRecord> parse() throws IOException {
         Path path = getResourceAsPath("sample.xlsx");
@@ -15,9 +17,9 @@ public class SampleParser {
         return excelParser.parseJavaObj(
                 inputStream,
                 SHEET_INDEX,
-                Set.of("ID", "Name", "Age", "Email"),
+                HEADER_COLUMNS,
                 HEADER_ROW_INDEX,
-                (row, columnIndexMap) -> { // implement ExcelRowMapper by lambda
+                (row, columnIndexMap) -> {
                     String name = row.getCell(columnIndexMap.get("Name")).getStringCellValue();
                     int age = (int) row.getCell(columnIndexMap.get("Age")).getNumericCellValue();
                     String email = row.getCell(columnIndexMap.get("Email")).getStringCellValue();
